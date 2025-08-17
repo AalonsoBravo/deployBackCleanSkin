@@ -1,7 +1,7 @@
 import { validationResult } from "express-validator";
 import Carrito from "../models/Carrito.js";
 import Producto from "../models/Producto.js";
-
+// creando las funciones del carrito
 // crear o agregar al carrito
 export const agregarCarrito = async (req, res) =>{
     const errores = validationResult(req);
@@ -28,20 +28,20 @@ export const agregarCarrito = async (req, res) =>{
         if(!carrito) {
             carrito = new Carrito({
                 productos : [{
-                    producto: producto._id,
+                    productoId: productoId._id,
                     cantidad: 1
                 }]
             });
         } else {
             const productoEnCarrito = carrito.productos.find(
-                (item) => item.producto.equals(_id)
+                (item) => item.productoId.equals(_id)
             );
             if (productoEnCarrito) {
                 productoEnCarrito.cantidad += 1;
                 console.log(`Cantidad actualizada para el producto en el carrito: ${JSON.stringify(productoEnCarrito)}`);
             } else {
                 carrito.productos.push({
-                    producto: producto._id,
+                    productoId: productoId._id,
                     cantidad: 1
                 });
                 console.log(`Producto agregado al carrito: ${JSON.stringify(carrito.productos[carrito.productos.length - 1])}`);
@@ -57,6 +57,7 @@ export const agregarCarrito = async (req, res) =>{
             }
         });
     } catch (error) {
+        console.log(`Errorr al agregar producto al carrito: ${error.message}`);
         console.error(`Error al agregar producto al carrito: ${error.message}`);
         return res.status(500).json({
             Error: "Error interno del servidor."
@@ -65,10 +66,9 @@ export const agregarCarrito = async (req, res) =>{
 }
 
 // vaciar carrito
-
 export const vaciarCarrito = async (req, res) =>{
     const { carritoId } = req.body;
-    console.log(`Datos recibidos para vaciar carrito: ${JSON.stringify(req.body)}`);
+    console.log(`🛒Datos recibidos para vaciar carrito: ${JSON.stringify(req.body)}`);
 
     try {
         const carrito = await Carrito.findById(carritoId);
@@ -79,7 +79,7 @@ export const vaciarCarrito = async (req, res) =>{
             })
         }
         // vaciamos el carrito
-        carrito.items = [];
+        carrito.productos = [];
         await carrito.save();
         console.log(`Carrito vaciado: ${JSON.stringify(carrito)}`);
         return res.status(200).json({
@@ -110,6 +110,7 @@ export const obtenerCarrito = async (req, res) => {
             id: item.productoId._id,
             nombre: item.productoId.nombre,
             precio: item.productoId.precio,
+            imagenUrl: item.productoId.imagenUrl,
             cantidad: item.cantidad,
             subtotal: item.productoId.precio * item.cantidad
         }));
@@ -136,6 +137,7 @@ export const obtenerCarrito = async (req, res) => {
 // eliminamos un item del carrito
 export const eliminarDeCarrito = async (req, res) => {
     const { productoId } = req.params;
+    console.log(`🪪ID del producto a eliminar del carrito: ${productoId}`);
 
     try {
         const carrito = await Carrito.findOne();

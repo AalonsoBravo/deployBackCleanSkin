@@ -27,7 +27,7 @@ const productoSchema = new mongoose.Schema({
     },
     categoria: {
         type: String,
-        enum: ['ampoule', 'cleanser', 'solarProtection'],
+        enum: ['ampoule', 'cleanser', 'solarProtection'],   
         required: true
     }
 });

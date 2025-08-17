@@ -57,6 +57,8 @@ export const loginUser = async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: '1h' }
         );
+        console.log('--------------TOKEN----------------');
+        console.log(`Token generado para el usuario ${user.email}: ${token}`);
         res.status(200).json({
             message: 'Inicio de sesión exitoso',
             token,
