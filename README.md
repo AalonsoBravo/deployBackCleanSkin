@@ -45,8 +45,13 @@ Backend para CleanSkin, proyecto de gestión de productos y carrito de compras.
 - `DELETE /api/carritos/eliminarDeCarrito/:productoId` — Eliminar producto del carrito
 
 ## Notas
-- Recuerda iniciar MongoDB antes de correr el backend.
-- El frontend debe consumir las rutas según la configuración del archivo `.env`.
 
----
 Desarrollado por Alonso Bravo
+## Importante:
+
+Estos son los deploys del proyecto en Railway:
+- Backend: https://deploybackcleanskin-production.up.railway.app/
+- Frontend: https://deployfrontcleanskin-production.up.railway.app/
+
+Accede a estas URLs para probar el proyecto en producción.
+
